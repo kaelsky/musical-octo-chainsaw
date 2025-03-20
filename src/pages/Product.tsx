@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProductProps } from "./List";
+import { Card } from "../components/Card";
 
 export function Product() {
   const { productId } = useParams();
@@ -25,8 +26,9 @@ export function Product() {
   }, [productId]);
 
   return (
-    <div>
-      Product Detail {productId}: {product?.title}
+    <div className="product">
+      <h1>Product Detail</h1>
+      {product && <Card product={product} withDetail />}
     </div>
   );
 }

@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Cart as CartContext } from "../components/CartContext";
 import { API_URL } from "../config/api";
+import { Card } from "../components/Card";
+import { motion } from "framer-motion";
 
 export type ProductProps = {
   category: string;
@@ -13,7 +14,6 @@ export type ProductProps = {
 };
 
 export function List() {
-  const { cart, setCart } = useContext(CartContext);
   const [products, setProducts] = useState<ProductProps[]>([]);
   const [isLoading, setItLoading] = useState(false);
 
@@ -34,27 +34,20 @@ export function List() {
   }, []);
 
   if (isLoading) {
-    return <>Loading...</>;
-  }
-
-  function addToCart(product: ProductProps) {
-    setCart([...cart, product]);
+    return <div className="center">Loading...</div>;
   }
 
   return (
-    <main>
+    <motion.div className="products" layout>
       <h1>
-        Pelico Store <Link to={"/cart"}>🛍️</Link>
+        <Link to={"/products"}>🛍️</Link> Web store application
       </h1>
 
-      <ul>
-        {products.map((product) => (
-          <li>
-            <Link to={`/products/${product.id}`}>{product.title}</Link>
-            <button onClick={() => addToCart(product)}>+</button>
-          </li>
+      <div className="list">
+        {products.map((product, index) => (
+          <Card key={product.id} index={index} product={product} />
         ))}
-      </ul>
-    </main>
+      </div>
+    </motion.div>
   );
 }
